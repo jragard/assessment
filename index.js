@@ -1,52 +1,78 @@
-const express = require('express');
-const multer = require('multer');
-const upload = multer({ dest: 'public/' });
-const port = 3000;
-const app = express();
-
-
-
-app.use(express.static('public'));
-
-app.listen(port);
-
-app.set('view engine', 'pug')
-
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/test');
+const express = require('express');
 
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-    
-    var formSchema = mongoose.Schema({
-        name: String,
-        email: String,
-        attending: Boolean,
-        guests: Number
-    });
+const port = 3000;
+const app = express();
+// const mongoose = require('mongoose');
+const pug= require ('pug');
+app.use(express.static('public'));
+app.set('view engine', 'pug');
+app.use(express.urlencoded({extended: false}));
 
-    var Response = mongoose.model('Response', formSchema);
-    
-    
-})
+const formSchema = mongoose.Schema({
+    name: String,
+    email: String,
+    attending: Boolean,
+    guests: Number
+});
+
+const Response = mongoose.model('Response', formSchema);
+
+app.get('/', function(req, res) {
+
+    res.render('index');
+});
+
 
 app.post('/reply', function (req, res) {
-    let instance = new Response({ 
-        name: req.name,
-        email: req.email,
-        attending: req.attending,
-        guests: req.guests   
-    });
+    // console.log(req.body);
+    const instance = new Response(req.body);
 
-    instance.save(function (err, instance) {
-        if (err) return console.error(err);
-    })
 
-    // res.send()
-}); 
+    // Callbacks 
 
-app.get('/', function (req, res) {
-    res.render('index', {title: "RSVP"});
-})
+    // instance.save(function (err, instance) {
+    //     if (err) res.send(err);
+    //     res.send(`
+    //     <h1>Thank your for your response!</h1>
+    //     <p>Click here to see current <a href="/guests">/guests</a> </p>
+    //   `);
+    // })
+
+    // Promises
+
+    instance.save()
+        .then(instance => res.send(`
+            <h1>Thank your for your response!</h1>
+            <p>Click here to see current <a href="/guests">/guests</a> </p>
+        `)).catch(err => res.send(err))
+
+       
+});
+    
+
+
+app.get('/guests', function (req, res)  {
+    // if else for attending/ not attending?
+    Response.find( function (err, people) {
+    
+    res.render("guests", {people});
+   
+    // document.write(people[i].name + "happily confirmed!"); 
+    
+   
+});
+});
+
+
+app.listen(port, () => {
+    mongoose.connect('mongodb://localhost/rsvp');
+});
+
+
+
+
+   
+    
+    

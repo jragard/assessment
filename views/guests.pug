@@ -1,0 +1,18 @@
+html
+    head
+        title
+            Guest Form
+
+    body
+        h1 Guest Form
+        h2 Attending
+        ul
+            for person in people
+                if person.attending
+                    li= person.name
+        h2 Not Attending
+        ul
+            for person in people
+                if !person.attending
+                    li= person.name
+            

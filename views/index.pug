@@ -1,34 +1,66 @@
-doctype
 html
-    include includes/header.pug
+    head
+        title
+            RSVP Form
+
     body
-        div(class='container')
-            h1 Are you going?
+        form(
+            action= "/reply"     
+            method="post"
             
-            p= typeof msg != 'undefined' ? msg : ''
-            
-            form(method='POST' action='/register')
-                div.form-group
-                    label(for='name') Name:
-                    input#name.form-control(type='text', placeholder='first and last' name='name')
-                div.form-group
-                    label(for='email') Email:
-                    input#email.form-control(type='email', placeholder='name@email.com' name='email')
-                div
-                    input(type="radio", id="contactChoice1", name="contact", value="email")
-                    label(for="contactChoice1")="Email"
-                    input(type="radio", id="contactChoice2", name="contact", value="phone")
-                    label(for="contactChoice2")="Phone"
-                    input(type="radio", id="contactChoice3",name="contact", value="mail")
-                    label(for="contactChoice3")="Mail"
-                    button.btn.btn-primary(type='submit') Submit
+        )
+            h1
+                RSVP RSVP Here!        
+
+            div 
+                label(
+                for="Name"
+                type="text"
+                id="name"
+            )   
+                | Guest Name  
+                input(type="text" name="name" value=" ")
                 
-            
-            input(class="btn", type="button", value="Go back!", onclick="history.back()")
+
+            div
+                label(
+                for="email"
+                id="email"
+            )  
+                | Guest E-mail
+                input(type="text" name="email" value= " ")
                 
-            input(class="btn", type="button", value="home", onclick="window.location.href='http://localhost:3000'")
-            div(id="images")
-            
-        script(src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous")
-        script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js")
-        script(src="index.js")
+
+            div
+                label(
+                for="attending"  
+                id="attending"
+            )
+                | Response:
+                | I'll be there
+                input(type="radio" name="attending" value="true")
+                | I can't make it                
+                input(type="radio" name="attending" value="false")
+
+
+            div               
+                label(
+                    for="number"
+                    id="number"
+                    
+                ) 
+                | How many guests in your party?     
+                select  
+                        option(value="1" name="guests") one
+                        option(value="2" name="guests") two
+                        option(value="3" name="guests") three
+                        option(value="4" name="guests") four
+                        option(value="5" name="guests") five
+                        option(value="6" name="guests") six
+                        option(value="7" name="guests") seven
+                        option(value="8" name="guests") eight                   
+            div
+                button(
+                    type='submit'
+                    style='width= 20px; height: 10px'
+                    ) submit 
